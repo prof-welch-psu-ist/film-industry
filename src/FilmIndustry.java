@@ -35,15 +35,39 @@ public class FilmIndustry {
             implements FilmIndustryWorker {
 
         @Override public boolean specializesInGenre(MovieGenre g) {
-            return false;
+            boolean theAnswer = switch (g) {
+                case SciFi  -> industryYears > 5;
+                default     -> true;
+            };
+            return theAnswer; // note: can be simplified
         }
     }
 
     public record Actor(String firstName, String lastName, ActingStyle style, int industryYears)
-            implements FilmIndustryWorker {}
+            implements FilmIndustryWorker {
+        @Override public boolean specializesInGenre(MovieGenre g) {
+            var theAnswer = switch (g) {
+                case Action, Romance -> true;
+                case Horror, SciFi -> industryYears > 10;
+                case Comedy , Drama -> style == ActingStyle.Improv || style == ActingStyle.Character;
+            };
+            return theAnswer;
+        }
+    }
+
+    public enum MPAARating {
+        R, PG13, G, PG
+    }
+
+    // a record type to represent a movie
+    public record Movie(String title, Director director, Producer producer, int yearReleased,
+                     MPAARating rating, ArrayList<Actor> actors) {
+    }
 
     public static void main(String[] args) {
 
+        //var producer = new P
+        Movie terminator2 = new Movie("Terminator 2", )
 
     }
 }
